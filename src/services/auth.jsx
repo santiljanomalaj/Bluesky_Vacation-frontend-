@@ -16,10 +16,7 @@ class AuthService {
   }
   loginSocial(email)
   {
-      return ajaxPost(API_HOST+'/ajax/loginsocial',{email},false)
-      .then(res=>{
-        console.log(res);
-      })
+      return ajaxPost(API_HOST+'/ajax/loginsocial',{email:email.email},false)
   }
   signIn(email, password) {
     // console.log('service->signIn', email, password);

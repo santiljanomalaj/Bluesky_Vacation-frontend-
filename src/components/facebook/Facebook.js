@@ -16,10 +16,8 @@ export class Facebook extends Component{
        };
     }
     responseFacebook=response=>{
-        console.log(response);
-        const data={email:response.email,token:response.token}
-            console.log(data);
-            if(response.email && response.token){
+        const data={email:response.email}
+            if(response.email && response.accessToken){
                 authService.loginSocial(data).then(res=>{
                     if(res && res.success==true){
                         setCookie('is_loged_in', 'true', 1);
@@ -27,23 +25,15 @@ export class Facebook extends Component{
                         setCookie('user_id', res.userinfo.id, 1);
                         setCookie('user_type', res.userinfo.user_type, 1);   
                         setCookie('token', res.token, 1);
+                        this.props.facebooklogin();
                     }
                     else{
-                        alertService.showError("Email not exsit", "");
-                        window.location.href="/";
-                        return;
-                    }
-                });
-                this.props.facebooklogin();
-             }
-            // window.location.href="/";
-        // this.setState({
-        //     isLoggedIn:true,
-        //     userID:response.userID,
-        //     name:response.name,
-        //     email:response.email,
-        //     picture:response.picture.data.url
-        // });
+                            alertService.showError("Email not exsit", "");
+                            window.location.href="/";
+                            return;
+                        }
+                    });
+                }
     }
     componentClicked=()=>console.log("clicked");
     render()

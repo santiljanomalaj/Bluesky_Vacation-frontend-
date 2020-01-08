@@ -72,7 +72,7 @@ export class AppHeader extends React.PureComponent {
   }
   facebook(){
     this.setState({is_logged_in: true, user_name: authService.userName()});
-    window.location.href="/";
+    // window.location.href="/";
   }
   handleMenuOpen() {
     this.setState({

@@ -28,7 +28,7 @@ export class Facebook extends Component{
                         this.props.facebooklogin();
                     }
                     else{
-                            alertService.showError("Email not exsit", "");
+                            alertService.showError("You must signup in this site FB Email", "");
                             window.location.href="/";
                             return;
                         }

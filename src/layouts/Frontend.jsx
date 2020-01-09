@@ -1,15 +1,15 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
-import {createStore,applyMiddleware} from "redux";
-import thunk from "redux-thunk";
-import {Provider} from "react-redux";
+// import {createStore,applyMiddleware} from "redux";
+// import thunk from "redux-thunk";
+// import {Provider} from "react-redux";
 
 import "react-toastify/dist/ReactToastify.css";
 
 import { AppFooter,AppHeader } from "components";
-import { ChatBox } from "components/chatbox";
+// import { ChatBox } from "components/chatbox";
 
-import { authService } from "services/auth";
+// import { authService } from "services/auth";
 
 
 

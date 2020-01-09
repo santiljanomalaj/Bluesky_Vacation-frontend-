@@ -1,4 +1,8 @@
-import {API_HOST, ajaxGet, ajaxPost, getCookie} from 'services/config';
+import {
+          API_HOST,
+          ajaxGet,
+          // ajaxPost, 
+          getCookie} from 'services/config';
 
 class ChatService {
   /* Inbox / ChatBox */

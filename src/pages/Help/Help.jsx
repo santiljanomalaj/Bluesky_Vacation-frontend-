@@ -121,7 +121,10 @@ class HelpComponent extends React.PureComponent {
       })
       query_search_result_panel = <div className="query_search_panel">{query_search_result}</div>;
     }
-
+    const symbolIcon={
+      float:'right',
+      marginRight:'-20px'
+    }
     return(
       <main>
         <HelpBanner onChange={this.handleQueryInput} searchResult={query_search_result_panel} value={this.state.query}></HelpBanner>
@@ -199,12 +202,13 @@ class HelpComponent extends React.PureComponent {
                               <div className={ question.opened ? 'panel-heading accordion-toggle question-toggle' : 'panel-heading accordion-toggle question-toggle collapsed'} 
                                 >
                                 <h2 className="panel-title">
-                                  <Link to="#" className="subtitle"><span>{index + 1}. </span>{question.question}</Link>
+                                  <Link to="#" className="subtitle"><span>{index + 1}. </span>{question.question}
                                   {
                                     question.opened 
-                                    ? (<FontAwesomeIcon icon={faMinus} className="open-icon"/>)
-                                    : (<FontAwesomeIcon icon={faPlus} className="close-icon"/>)
+                                    ? (<FontAwesomeIcon icon={faMinus} style={symbolIcon} className="open-icon"/>)
+                                    : (<FontAwesomeIcon icon={faPlus} style={symbolIcon} className="close-icon"/>)
                                   }
+                                  </Link>
                                 </h2>
                               </div>
                               <div id={`question${question.id}`} className={ question.opened ? "panel-collapse collapse show" :  "panel-collapse collapse"}>

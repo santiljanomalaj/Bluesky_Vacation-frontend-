@@ -5,9 +5,9 @@ import { setCookie } from 'services/config';
 import { alertService } from 'services/alert';
 
 class VerifyUser extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
   componentDidMount() {
 		const user_id = this.props.match.params.id;
 		authService.verifyUser(user_id).then(res => {

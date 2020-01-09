@@ -19,7 +19,7 @@ export class Facebook extends Component{
         const data={email:response.email}
             if(response.email && response.accessToken){
                 authService.loginSocial(data).then(res=>{
-                    if(res && res.success==true){
+                    if(res && res.success === true){
                         setCookie('is_loged_in', 'true', 1);
                         setCookie('user_name', res.userinfo.first_name, 1);
                         setCookie('user_id', res.userinfo.id, 1);
@@ -38,25 +38,7 @@ export class Facebook extends Component{
     componentClicked=()=>console.log("clicked");
     render()
     {
-        let fbContent;
-        if(this.state.isLoggedIn)
-        {
-            // fbContent=(
-            //     <div style={{
-            //         width:'400px',
-            //         margin:'auto',
-            //         background:'#f4f4f4',
-            //         padding:'20px'
-            //     }}>
-            //         <img src={this.state.picture} alt={this.state.name} />
-            //         <h2>Welcome {this.state.name}</h2>
-            //         Email:{this.state.email}
-                    
-            //     </div>
-            // )
-        }
-        else
-        {
+        let fbContent;  
             fbContent=(<FacebookLogin
                 appId="2954386157928223"
                 fields="name,email,picture"
@@ -69,7 +51,6 @@ export class Facebook extends Component{
               </a>
                   )}
             />)
-        }
         return (
             <div>
                 {fbContent}

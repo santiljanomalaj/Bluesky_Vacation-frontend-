@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-responsive-modal';
 import SuccessModal from 'react-responsive-modal';
-import {setCookie,getCookie,ajaxPost,API_HOST} from "../../services/config"
+import {getCookie,ajaxPost,API_HOST} from "../../services/config"
 
 import { alertService } from 'services/alert';
 
@@ -59,7 +59,7 @@ export class AppHeader extends React.PureComponent {
     const email=this.state.email;
     const data={email_code:code,email:email};
     ajaxPost(API_HOST+'/ajax/verifyuser',data).then(res=>{
-      if(res.success==true)
+      if(res.success === true)
       {
         alertService.showSuccess("Your email verified", "");
         window.location.href="/";

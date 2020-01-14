@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Modal from 'react-responsive-modal';
 import DatePicker from "react-datepicker";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import dateFns from 'date-fns';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBook } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faBook} from '@fortawesome/free-solid-svg-icons';
 
 import BookingCalendar from 'components/rooms/calendar/BookingCalendar';
 import RatePanel from 'components/rooms/calendar/RatePanel';
@@ -43,7 +43,15 @@ class RoomCalendar extends React.Component {
 
       startDate: new Date(),
       endDate: new Date(),
-      reservation_name: '',
+      reservation_f_name: '',
+      reservation_l_name: '',
+      street_address_one: '',
+      street_address_two: '',
+      city: '',
+      statename: '',
+      postalcode: '',
+      phonenumber: '',
+      emailaddress: '',
       reservation_price: 0,
       reservation_guests: 1,
       reservation_notes: '',
@@ -108,11 +116,11 @@ class RoomCalendar extends React.Component {
     this.handleRemoveModal = this.handleRemoveModal.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.bookingCalendarInit();
   }
 
-  bookingCalendarInit () {
+  bookingCalendarInit() {
     const room_id = this.props.match.params.room_id;
 
     roomsService.getUnAvailableCalendar(room_id).then(res => {
@@ -145,17 +153,20 @@ class RoomCalendar extends React.Component {
     //   // this.setState({daily_calendar: res});
     // });
   }
-  handleExportCalendar () {
+
+  handleExportCalendar() {
     this.setState({
       open_export_modal: true
     })
   }
-  handleImportCalendar () {
+
+  handleImportCalendar() {
     this.setState({
       open_import_modal: true
     })
   }
-  handeImportCalendarAction (e) {
+
+  handeImportCalendarAction(e) {
     e.preventDefault()
 
     const room_id = this.props.match.params.room_id;
@@ -177,7 +188,7 @@ class RoomCalendar extends React.Component {
     });
   }
 
-  handleBookingBlocked (e) {
+  handleBookingBlocked(e) {
     this.setSaveStatus();
     e.preventDefault();
 
@@ -202,8 +213,7 @@ class RoomCalendar extends React.Component {
         end_date: Utils._.formatYmdDate(this.state.endDate),
         seasonal_name: this.state.unavailable_name
       };
-    }
-    else {
+    } else {
       data = {
         room_id: this.props.match.params.room_id,
         reservation_id: 0,
@@ -220,8 +230,7 @@ class RoomCalendar extends React.Component {
         this.closeReservationModal();
         this.bookingCalendarInit();
         alertService.showSuccess('Save Booking Blocked', 'Successfully!');
-      }
-      else {
+      } else {
         let error_message = "";
         Object.keys(res.errors).map((key, index) => {
           return (error_message += res.errors[key] + '<br>');
@@ -235,7 +244,7 @@ class RoomCalendar extends React.Component {
     });
   }
 
-  handleBookingReservation (e) {
+  handleBookingReservation(e) {
     this.setSaveStatus();
     e.preventDefault();
 
@@ -254,7 +263,7 @@ class RoomCalendar extends React.Component {
       data = {
         start_date: Utils._.formatYmdDate(this.state.startDate),
         end_date: Utils._.formatYmdDate(this.state.endDate),
-        seasonal_name: this.state.reservation_name,
+        seasonal_name: this.state.reservation_f_name+''+this.state.reservation_l_name,
         edit_seasonal_name: reservation_data.seasonal_name,
         notes: this.state.reservation_notes,
         reservation_source: 'Calendar',
@@ -263,19 +272,18 @@ class RoomCalendar extends React.Component {
         reservation_id: this.state.edit_reservation_id,
         reserveid: reservation_data.reserveid,
       };
-    }
-    else {
+    } else {
       data = {
         start_date: Utils._.formatYmdDate(this.state.startDate),
         reservation_id: 0,
         reserveid: 0,
         end_date: Utils._.formatYmdDate(this.state.endDate),
-        seasonal_name: this.state.reservation_name,
+        seasonal_name: this.state.reservation_f_name,
         edit_seasonal_name: '',
         notes: this.state.reservation_notes,
         reservation_source: 'Calendar',
         price: this.state.reservation_price !== '' ? this.state.reservation_price : 0,
-        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0,
+        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0
       };
     }
 
@@ -284,8 +292,7 @@ class RoomCalendar extends React.Component {
         this.closeReservationModal();
         this.bookingCalendarInit();
         alertService.showSuccess('Save Reservation', 'Successfully!');
-      }
-      else {
+      } else {
         let error_message = "";
         Object.keys(res.errors).map((key, index) => {
           return (error_message += res.errors[key] + '<br>');
@@ -299,7 +306,7 @@ class RoomCalendar extends React.Component {
     });
   }
 
-  handleBookingSeasonal (e) {
+  handleBookingSeasonal(e) {
     this.setSaveStatus();
     e.preventDefault();
 
@@ -334,8 +341,7 @@ class RoomCalendar extends React.Component {
         start_date: Utils._.formatYmdDate(this.state.startDate),
         end_date: Utils._.formatYmdDate(this.state.endDate),
       };
-    }
-    else {
+    } else {
       data = {
         room_id: this.props.match.params.room_id,
         edit_seasonal_name: this.state.seasonal_name,
@@ -372,18 +378,20 @@ class RoomCalendar extends React.Component {
     });
 
   }
-  handleStartDatePickerChange (date) {
+
+  handleStartDatePickerChange(date) {
     this.setState({
       startDate: date
     });
   }
-  handleEndDatePickerChange (date) {
+
+  handleEndDatePickerChange(date) {
     this.setState({
       endDate: date
     });
   }
 
-  onSelectedRange (start_date, end_date) {
+  onSelectedRange(start_date, end_date) {
     this.setState({
       startDate: start_date,
       endDate: end_date
@@ -391,10 +399,11 @@ class RoomCalendar extends React.Component {
     this.openReservationModal();
   }
 
-  openReservationModal () {
-    this.setState({ open_modal: true });
+  openReservationModal() {
+    this.setState({open_modal: true});
   }
-  closeReservationModal () {
+
+  closeReservationModal() {
     this.setState({
       open_modal: false,
       edit_season: false,
@@ -406,7 +415,7 @@ class RoomCalendar extends React.Component {
     })
   }
 
-  handleChangeModal (e) {
+  handleChangeModal(e) {
     e.preventDefault();
     let name = e.target.name;
     let value = e.target.value;
@@ -415,7 +424,7 @@ class RoomCalendar extends React.Component {
     });
   }
 
-  handleEditSeasonal (index, value) {
+  handleEditSeasonal(index, value) {
     let seasonal_data = this.state.month_calendar_data.seasonal_price_detail[index];
     this.setState({
       startDate: Utils._.parseDateStr(seasonal_data.start_date),
@@ -435,7 +444,8 @@ class RoomCalendar extends React.Component {
       seasonal_minimum_stay: seasonal_data.minimum_stay,
     });
   }
-  handleRemoveSeasonal (index, value) {
+
+  handleRemoveSeasonal(index, value) {
     const room_id = this.props.match.params.room_id;
     roomsService.deleteSeasonalPrice(room_id, {seasonal_id: value}).then(res => {
       if (res && res.status === 'success') {
@@ -451,7 +461,7 @@ class RoomCalendar extends React.Component {
     });
   }
 
-  handleRemoveBlocked (index, value) {
+  handleRemoveBlocked(index, value) {
     const room_id = this.props.match.params.room_id;
     const blocked_data = this.state.month_calendar_data.not_available_dates[index];
     const data = {
@@ -475,7 +485,8 @@ class RoomCalendar extends React.Component {
       alertService.showError("Remove Blocked", "Not Success!");
     });
   }
-  handleEditBlocked (index, value) {
+
+  handleEditBlocked(index, value) {
     let blocked_data = this.state.month_calendar_data.not_available_dates[index]
     this.setState({
       tabIndex: 2,
@@ -491,7 +502,7 @@ class RoomCalendar extends React.Component {
     })
   }
 
-  handleRemoveReservation (index, value) {
+  handleRemoveReservation(index, value) {
     const room_id = this.props.match.params.room_id;
     const reservation_data = this.state.month_calendar_data.reservation_detail[index];
     const data = {
@@ -515,10 +526,11 @@ class RoomCalendar extends React.Component {
       alertService.showError("Remove Reservation", "Not Success!");
     });
   }
-  handleEditReservation (index, value) {
+
+  handleEditReservation(index, value) {
     let reservation_data = this.state.month_calendar_data.reservation_detail[index]
     this.setState({
-      reservation_name: reservation_data.seasonal_name,
+      reservation_f_name: reservation_data.seasonal_name,
       reservation_price: reservation_data.price,
       reservation_guests: reservation_data.guests,
       reservation_notes: reservation_data.notes,
@@ -539,27 +551,30 @@ class RoomCalendar extends React.Component {
       on_removing: false
     });
   }
+
   setRemoveStatus() {
     this.setState({on_removing: true});
   }
+
   setSaveStatus() {
     this.setState({on_saving: true});
   }
+
   clearSaveStatus() {
     this.setState({on_saving: false});
   }
-  handleRemove () {
+
+  handleRemove() {
     if (this.state.alert_type === 1) {
       this.handleRemoveSeasonal(this.state.alert_index, this.state.alert_value);
-    }
-    else if (this.state.alert_type === 2) {
+    } else if (this.state.alert_type === 2) {
       this.handleRemoveReservation(this.state.alert_index, this.state.alert_value);
-    }
-    else if (this.state.alert_type === 3) {
+    } else if (this.state.alert_type === 3) {
       this.handleRemoveBlocked(this.state.alert_index, this.state.alert_value);
     }
     this.setRemoveStatus();
   }
+
   handleRemoveModal(type, index, value) {
     let alert_title = 0;
     let alert_content = '';
@@ -589,58 +604,70 @@ class RoomCalendar extends React.Component {
       on_removing: false
     });
   }
-  handleEdit (type, index, value) {
+
+  handleEdit(type, index, value) {
     if (type === 1) {
       this.handleEditSeasonal(index, value);
-    }
-    else if (type === 2) {
+    } else if (type === 2) {
       this.handleEditReservation(index, value);
-    }
-    else if (type === 3) {
+    } else if (type === 3) {
       this.handleEditBlocked(index, value);
     }
   }
-  render () {
-    let { month_calendar_data } = this.state;
+
+  render() {
+    let {month_calendar_data} = this.state;
     const seasonal_columns = [
       {
         Header: 'Name',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'seasonal_name', // String-based value accessors!,
         minWidth: 150,
         Cell: props => <div className="w-100">
           <div className="row col-md-12">
-            <strong className="mx-auto">{props.value}</strong> </div>
-          <div className="row col-md-12"><span className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)} - {Utils._.momentUtcFormatDate(props.original.end_date)})</span></div>
+            <strong className="mx-auto">{props.value}</strong></div>
+          <div className="row col-md-12"><span
+              className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)} - {Utils._.momentUtcFormatDate(props.original.end_date)})</span>
+          </div>
         </div>
       }, {
         Header: 'Nightly',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'price',
-        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ? <span dangerouslySetInnerHTML={{ __html: month_calendar_data.rooms_price.currency.symbol }}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
+        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ?
+            <span
+                dangerouslySetInnerHTML={{__html: month_calendar_data.rooms_price.currency.symbol}}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
       }, {
         Header: 'Weekly',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'week',
-        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ? <span dangerouslySetInnerHTML={{ __html: month_calendar_data.rooms_price.currency.symbol }}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
+        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ?
+            <span
+                dangerouslySetInnerHTML={{__html: month_calendar_data.rooms_price.currency.symbol}}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
       }, {
         Header: 'Monthly',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'month',
-        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ? <span dangerouslySetInnerHTML={{ __html: month_calendar_data.rooms_price.currency.symbol }}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
+        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ?
+            <span
+                dangerouslySetInnerHTML={{__html: month_calendar_data.rooms_price.currency.symbol}}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
       }, {
         Header: 'Min. Stay',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'minimum_stay',
         Cell: props => <span className='text-center'> <strong>{props.value}</strong>Nights</span> // Custom cell components!
       }, {
         Header: 'Action',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'id',
         Cell: props => {
           return <div>
-            <Link to="#" className="table_edit" onClick={() => this.handleEditSeasonal(props.index, props.value)}><i className="fa fa-edit"></i></Link>
-            <Link to="#" className="delete_details delete_seasonal" onClick={() => this.handleRemoveSeasonal(props.index, props.value)}><i className="fa fa-trash"></i></Link>
+            <Link to="#" className="table_edit"
+                  onClick={() => this.handleEditSeasonal(props.index, props.value)}><i
+                className="fa fa-edit"></i></Link>
+            <Link to="#" className="delete_details delete_seasonal"
+                  onClick={() => this.handleRemoveSeasonal(props.index, props.value)}><i
+                className="fa fa-trash"></i></Link>
           </div>
         }
       }
@@ -652,13 +679,15 @@ class RoomCalendar extends React.Component {
         accessor: 'seasonal_name',
         Cell: props => <div className="w-100">
           <div className="row col-md-12">
-            <strong className="mx-auto">{props.value}</strong> </div>
-          <div className="row col-md-12"><span className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)} - {Utils._.momentUtcFormatDate(props.original.end_date)})</span></div>
+            <strong className="mx-auto">{props.value}</strong></div>
+          <div className="row col-md-12"><span
+              className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)} - {Utils._.momentUtcFormatDate(props.original.end_date)})</span>
+          </div>
         </div>
       },
       {
         Header: 'Action',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'id',
         Cell: props => <div>
           {/* <Link to="#" className="table_edit" onClick={() => this.handleEditBlocked(props.index, props.value)}><i className="fa fa-edit"></i></Link> */}
@@ -669,40 +698,48 @@ class RoomCalendar extends React.Component {
     const reservation_columns = [
       {
         Header: 'Name',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'seasonal_name',
         minWidth: 150,
         Cell: props => <div className="w-100">
           <div className="row col-md-12">
-            <strong className="mx-auto">{props.value}</strong> </div>
-          <div className="row col-md-12"><span className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)}-{Utils._.momentUtcFormatDate(props.original.end_date)})</span></div>
+            <strong className="mx-auto">{props.value}</strong></div>
+          <div className="row col-md-12"><span
+              className="mx-auto">({Utils._.momentUtcFormatDate(props.original.start_date)}-{Utils._.momentUtcFormatDate(props.original.end_date)})</span>
+          </div>
         </div>
       },
       {
         Header: 'Price',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'price',
-        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ? <span dangerouslySetInnerHTML={{ __html: month_calendar_data.rooms_price.currency.symbol }}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
+        Cell: props => <span className='text-center'>{month_calendar_data && month_calendar_data.rooms_price ?
+            <span
+                dangerouslySetInnerHTML={{__html: month_calendar_data.rooms_price.currency.symbol}}></span> : '$'}<strong>{props.value}</strong></span> // Custom cell components!
       },
       {
         Header: 'Guests',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'guests'
       },
       {
         Header: 'Nights',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         maxWidth: 150,
         accessor: 'duration'
       },
 
       {
         Header: 'Action',
-        style: { width: '100%', textAlign: 'center' },
+        style: {width: '100%', textAlign: 'center'},
         accessor: 'id',
         Cell: props => <div>
-          <Link to="#" className="table_edit" onClick={() => this.handleEditReservation(props.index, props.value)}><i className="fa fa-edit"></i></Link>
-          <Link to="#" className="delete_details delete_seasonal" onClick={() => this.handleRemoveReservation(props.index, props.value)}><i className="fa fa-trash"></i></Link>
+          <Link to="#" className="table_edit"
+                onClick={() => this.handleEditReservation(props.index, props.value)}><i
+              className="fa fa-edit"></i></Link>
+          <Link to="#" className="delete_details delete_seasonal"
+                onClick={() => this.handleRemoveReservation(props.index, props.value)}><i
+              className="fa fa-trash"></i></Link>
         </div>
       }
 
@@ -711,44 +748,54 @@ class RoomCalendar extends React.Component {
     const import_calendar_modal = (
         <Modal
             open={this.state.open_import_modal}
-            styles={{ modal: { padding: '0px' } }}
-            onClose={() => { this.setState({ open_import_modal: false }) }}>
+            styles={{modal: {padding: '0px'}}}
+            onClose={() => {
+              this.setState({open_import_modal: false})
+            }}>
           <div className="panel import-calendar">
             <div className="panel-header">
               <span>Import a New Calendar</span>
-              <Link to="#" data-behavior="modal-close" className="modal-close" onClick={() => { this.setState({ open_import_modal: false }) }}>
+              <Link to="#" data-behavior="modal-close" className="modal-close" onClick={() => {
+                this.setState({open_import_modal: false})
+              }}>
               </Link>
             </div>
             <div className="panel-body">
-              <p style={{ marginBottom: '20px' }}>
+              <p style={{marginBottom: '20px'}}>
                 <span>Import other calendars you use and we’ll automatically keep this listing’s availability up-to-date.</span>
               </p>
-              <form method="POST" onSubmit={this.handeImportCalendarAction} acceptCharset="UTF-8" name="export" id="feed_import_form" className="ng-pristine ng-valid">
+              <form method="POST" onSubmit={this.handeImportCalendarAction} acceptCharset="UTF-8"
+                    name="export" id="feed_import_form" className="ng-pristine ng-valid">
                 <div className="content">
-                  <label style={{ marginBottom: '20px' }}>
-                    <p style={{ marginBottom: '10px' }} className="label">
+                  <label style={{marginBottom: '20px'}}>
+                    <p style={{marginBottom: '10px'}} className="label">
                       <span>Calendar Address (URL)</span>
                     </p>
-                    <input type="text" name="ical_url" value={this.state.ical_url} onChange={this.handleChangeModal} placeholder="Paste calendar address (URL) here" className="space-1 " />
-                    <span className="text-danger" />
+                    <input type="text" name="ical_url" value={this.state.ical_url}
+                           onChange={this.handleChangeModal}
+                           placeholder="Paste calendar address (URL) here" className="space-1 "/>
+                    <span className="text-danger"/>
                   </label>
-                  <label style={{ marginBottom: 0 }}>
-                    <p style={{ marginBottom: '10px' }} className="label">
+                  <label style={{marginBottom: 0}}>
+                    <p style={{marginBottom: '10px'}} className="label">
                       <span>Name Your Calendar</span>
                     </p>
-                    <input type="text" name="ical_name" value={this.state.ical_name} onChange={this.handleChangeModal} placeholder="Custom name for this calendar" className="space-1 " />
-                    <span className="text-danger" />
+                    <input type="text" name="ical_name" value={this.state.ical_name}
+                           onChange={this.handleChangeModal} placeholder="Custom name for this calendar"
+                           className="space-1 "/>
+                    <span className="text-danger"/>
                   </label>
                 </div>
 
-                <div className="d-inline-block" style={{ marginTop: '20px' }}>
-                  <button id="feed_import_btn" data-prevent-default="true" className="btn btn-primary" ng-disabled="export.$invalid">
+                <div className="d-inline-block" style={{marginTop: '20px'}}>
+                  <button id="feed_import_btn" data-prevent-default="true" className="btn btn-primary"
+                          ng-disabled="export.$invalid">
                     <span>Import Calendar</span>
                   </button>
                 </div>
               </form>
             </div>
-            <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+            <div className="loading global-ajax-form-loader" style={{visibility: 'hidden'}}/>
           </div>
         </Modal>
     )
@@ -756,20 +803,26 @@ class RoomCalendar extends React.Component {
     const export_calendar_modal = (
         <Modal
             open={this.state.open_export_modal}
-            styles={{ modal: { padding: '0px' } }}
-            onClose={() => { this.setState({ open_export_modal: false }) }}
+            styles={{modal: {padding: '0px'}}}
+            onClose={() => {
+              this.setState({open_export_modal: false})
+            }}
         >
           <div className="export-calendar panel">
             <div className="panel-header">
               <span>Export Calendar</span>
-              <Link data-behavior="modal-close" className="modal-close" to="#" onClick={() => { this.setState({ open_export_modal: false }) }}>
+              <Link data-behavior="modal-close" className="modal-close" to="#" onClick={() => {
+                this.setState({open_export_modal: false})
+              }}>
               </Link>
             </div>
             <div className="panel-body">
               <p>
                 <span>Copy and paste the link into other ICAL applications</span>
               </p>
-              <input type="text" defaultValue={`${window.location.origin}/calendar/ical/${this.props.match.params.room_id}`} readOnly />
+              <input type="text"
+                     defaultValue={`${window.location.origin}/calendar/ical/${this.props.match.params.room_id}`}
+                     readOnly/>
             </div>
           </div>
         </Modal>
@@ -778,11 +831,11 @@ class RoomCalendar extends React.Component {
     const reservation_modal = (
         <Modal
             open={this.state.open_modal}
-            styles={{ modal: { padding: '0px' }}}
+            styles={{modal: {padding: '0px'}}}
             className="reservation-modal"
             onClose={() => this.closeReservationModal()}
         >
-          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({tabIndex})}>
             <TabList className="tabs tabba form-tab-header">
               <h3 className="ml-0">
                 Calendar Settings
@@ -794,89 +847,185 @@ class RoomCalendar extends React.Component {
             </TabList>
             <TabPanel>
               <div className="seasonal_price">
-                <form id="reservation_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingReservation}>
-                  <div className="ses_time datepicker-wrapper">
-                    <div className="col-md-6 col-sm-6 col-6 ses_pop row">
-                      <label className="h6 my-auto">Check in</label>
+                <form id="reservation_form_t" data-mode="create" className=" " noValidate="novalidate"
+                      onSubmit={this.handleBookingReservation}>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Check in <b className="text-danger">*</b></label>
                       <DatePicker
                           selected={this.state.startDate}
                           onChange={this.handleStartDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
-                      <label className="h6 my-auto">Check out </label>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Check out <b className="text-danger">*</b></label>
                       <DatePicker
                           selected={this.state.endDate}
                           onChange={this.handleEndDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation, you can cancel/delete it, select a new range of dates or edit the other reservation.</span>
+                    <span id="check_date_err" className="check_date_err"
+                          style={{display: 'none', color: 'red'}}>Your date is already in another reservation, you can cancel/delete it, select a new range of dates or edit the other reservation.</span>
 
                   </div>
                   <div className="ses_time">
-                    <div className="col-md-12 col-sm-12 col-12 ses_pop1">
-                      <label className="h6 my-auto">Name   <i rel="tooltip" className="icon icon-question" title="Each reservation name must be unique." /></label>
-                      <input type="text" id="reservation_name_t" name="reservation_name" value={this.state.reservation_name} onChange={this.handleChangeModal} className="tooltipstered" />
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">First Name <b className="text-danger">*</b>
+                        <i rel="tooltip"
+                           className="icon icon-question"
+                           title="Each reservation name must be unique."/>
+                      </label>
+                      <input type="text" id="reservation_f_name" name="reservation_f_name"
+                             value={this.state.reservation_f_name} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <span id="err_msg" style={{display: 'none', color: 'red'}}>Reservation name already used</span>
                     </div>
-                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Reservation name already used</span>
-                    <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Last Name <b className="text-danger">*</b>
+                        <i rel="tooltip"
+                           className="icon icon-question"
+                           title="Each reservation name must be unique."/>
+                      </label>
+                      <input type="text" id="reservation_l_name" name="reservation_l_name"
+                             value={this.state.reservation_l_name} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <span id="err_msg" style={{display: 'none', color: 'red'}}>Reservation name already used</span>
+                    </div>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Street Address <b className="text-danger">*</b>
+                      </label>
+                      <input type="text" id="street_address_one" name="street_address_one"
+                             value={this.state.street_address_one} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <span id="err_msg" style={{display: 'none', color: 'red'}}>Empty of Address</span>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Street Address - 2
+                      </label>
+                      <input type="text" id="reservation_l_name" name="reservation_l_name"
+                             value={this.state.street_address_two} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">City <b className="text-danger">*</b>
+                      </label>
+                      <input type="text" id="city" name="city"
+                             value={this.state.city} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">State
+                      </label>
+                      <input type="text" id="statename" name="statename"
+                             value={this.state.statename} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Postal Code
+                      </label>
+                      <input type="text" id="postalcode" name="postalcode"
+                             value={this.state.postalcode} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Phone Number <b className="text-danger">*</b>
+                      </label>
+                      <input type="text" id="phonenumber" name="phonenumber"
+                             value={this.state.phonenumber} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <span id="err_msg" style={{display: 'none', color: 'red'}}>Empty of Phone Number</span>
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-4 col-sm-4 col-4 ses_pop1">
+                      <label className="h6 my-auto">Email <b className="text-danger">*</b>
+                      </label>
+                      <input type="email" id="emailaddress" name="emailaddress"
+                             value={this.state.emailaddress} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <span id="err_msg" style={{display: 'none', color: 'red'}}>Empty of Email Address</span>
+                    </div>
+                    <div className="col-md-4 col-sm-4 col-4 ses_pop1">
                       <label className="h6 my-auto">Price </label>
                       <div className="pricelist">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="reservation_price_t" name="reservation_price" value={this.state.reservation_price} onChange={this.handleChangeModal} className="  tooltipstered valid " aria-invalid="false" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="reservation_price_t" name="reservation_price"
+                               value={this.state.reservation_price}
+                               onChange={this.handleChangeModal} className="  tooltipstered valid "
+                               aria-invalid="false"/>
                       </div>
-                      <p data-error="price" className="ml-error" />
+                      <p data-error="price" className="ml-error"/>
                     </div>
-                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
-                      <label className="h6 my-auto">Number of Guests <i rel="tooltip" className="icon icon-question" title="Number of guests for the reservation." /></label>
+                    <div className="col-md-4 col-sm-4 col-4 ses_pop1">
+                      <label className="h6 my-auto">Guests
+                        <i rel="tooltip"
+                           className="icon icon-question"
+                           title="Number of guests for the reservation."/>
+                      </label>
                       <div className="pricelist">
-                        <input type="number" id="reservation_guests_t" name="reservation_guests" value={this.state.reservation_guests} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <input type="number" id="reservation_guests_t" name="reservation_guests"
+                               value={this.state.reservation_guests}
+                               onChange={this.handleChangeModal} className="tooltipstered"/>
                       </div>
                     </div>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-12 col-sm-12 col-12 ses_pop1">
-                      <label className="h6 my-auto">Note   <i rel="tooltip" className="icon icon-question" title="Add additional notes to your reservation." /></label>
-                      <textarea id="reservation_note_t" name="reservation_notes" value={this.state.reservation_notes} onChange={this.handleChangeModal} className="tooltipstered" />
+                      <label className="h6 my-auto">Note <b className="text-danger">*</b>
+                        <i rel="tooltip"
+                           className="icon icon-question"
+                           title="Add additional notes to your reservation."/>
+                      </label>
+                      <textarea id="reservation_note_t" name="reservation_notes"
+                                value={this.state.reservation_notes} onChange={this.handleChangeModal}
+                                className="tooltipstered"/>
                     </div>
-                    <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Note required</span>
+                    <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                   </div>
                   <div className="btn-group d-flex">
                     <div className="col-md-6 col-sm-6 col-6 text-left">
-                      <Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_reservation_t">Cancel</Link>
+                      <Link to="#" className="day_cancel cancel_reservation d-none"
+                            id="cancel_reservation_t">Cancel</Link>
                     </div>
-                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'alignItems': 'center'}}>
-                      <button className="day_save" type="submit" id="save_reservation_t" name="save">Save</button>
-                      <Link to="#" className="day_delete d-none delete_reservation mt-2" id="delete_reservation_t">Delete</Link>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right"
+                         style={{'alignItems': 'center'}}>
+                      <button className="day_save" type="submit" id="save_reservation_t"
+                              name="save">Save
+                      </button>
+                      <Link to="#" className="day_delete d-none delete_reservation mt-2"
+                            id="delete_reservation_t">Delete</Link>
                       {
                         (this.state.on_saving) ?
-                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            (<div className="spinner-border" role="status"><span
+                                className="sr-only">Removing...</span></div>)
                             : null
                       }
                     </div>
                   </div>
-                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                  <div className="loading global-ajax-form-loader" style={{visibility: 'hidden'}}/>
                 </form>
               </div>
             </TabPanel>
             <TabPanel>
-              <form id="season_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingSeasonal}>
+              <form id="season_form_t" data-mode="create" className=" " noValidate="novalidate"
+                    onSubmit={this.handleBookingSeasonal}>
                 <div className="seasonal_price">
                   <div className="ses_time datepicker-wrapper">
-                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
+                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered"/>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop row">
                       <label className="h6 my-auto">Start Date </label>
                       <DatePicker
                           selected={this.state.startDate}
                           onChange={this.handleStartDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
                       <label className="h6 my-auto">End Date </label>
@@ -884,101 +1033,144 @@ class RoomCalendar extends React.Component {
                           selected={this.state.endDate}
                           onChange={this.handleEndDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another season, you can mark it as closed, select a new range of dates or update the other added season.</span>
+                    <span id="check_date_err" className="check_date_err"
+                          style={{display: 'none', color: 'red'}}>Your date is already in another season, you can mark it as closed, select a new range of dates or update the other added season.</span>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-12 col-sm-12 col-12 ses_pop1">
-                      <label className="h6 my-auto">Season Name   <i rel="tooltip" className="icon icon-question" title="Each seasonal name must be unique.  If this is an annual or recurring season, try appending the year to the end of the name (i.e. Summer 2018, Summer 2019, etc" /></label>
-                      <input type="text" id="season_name_t" name="seasonal_name" value={this.state.seasonal_name} onChange={this.handleChangeModal} className="tooltipstered" />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <label className="h6 my-auto">Season Name <i rel="tooltip"
+                                                                   className="icon icon-question"
+                                                                   title="Each seasonal name must be unique.  If this is an annual or recurring season, try appending the year to the end of the name (i.e. Summer 2018, Summer 2019, etc"/></label>
+                      <input type="text" id="season_name_t" name="seasonal_name"
+                             value={this.state.seasonal_name} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
+                    <span id="err_msg"
+                          style={{display: 'none', color: 'red'}}>Season name Already used</span>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
                       <label className="h6 my-auto">Price </label>
                       <div className="pricelist">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="seasonal_price_t" name="seasonal_price" value={this.state.seasonal_price} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="seasonal_price_t" name="seasonal_price"
+                               value={this.state.seasonal_price} onChange={this.handleChangeModal}
+                               className="tooltipstered"/>
                       </div>
-                      <p data-error="price" className="ml-error" />
+                      <p data-error="price" className="ml-error"/>
                     </div>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
-                      <label className="h6 my-auto">Price for extra Guest <i rel="tooltip" className="icon icon-question" title="Extra cost per guest per day" /></label>
+                      <label className="h6 my-auto">Price for extra Guest <i rel="tooltip"
+                                                                             className="icon icon-question"
+                                                                             title="Extra cost per guest per day"/></label>
                       <div className="pricelist">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="seasonal_additional_price_t" name="seasonal_guests" value={this.state.seasonal_guests} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="seasonal_additional_price_t" name="seasonal_guests"
+                               value={this.state.seasonal_guests} onChange={this.handleChangeModal}
+                               className="tooltipstered"/>
 
                       </div>
                     </div>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
-                      <label className="h6 my-auto"> Weekly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 7 night stay, each additional night is billed at the standard nightly rate up until the next 7 nights is reached for a single reservation." /></label>
+                      <label className="h6 my-auto"> Weekly Price <i rel="tooltip"
+                                                                     className="icon icon-question"
+                                                                     title="Rate is based on a 7 night stay, each additional night is billed at the standard nightly rate up until the next 7 nights is reached for a single reservation."/></label>
                       <div className="pricelist" ng-init="season_data.week=0">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="seasonal_week_t" name="seasonal_week" value={this.state.seasonal_week} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="seasonal_week_t" name="seasonal_week"
+                               value={this.state.seasonal_week} onChange={this.handleChangeModal}
+                               className="tooltipstered"/>
                       </div>
-                      <p data-error="week" className="ml-error" />
+                      <p data-error="week" className="ml-error"/>
                     </div>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
-                      <label className="h6 my-auto">Monthly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 30 night stay.  Each additional night is billed at the nightly rate, then weekly rate, until the next 30 nights is reached for a single reservation." /></label>
+                      <label className="h6 my-auto">Monthly Price <i rel="tooltip"
+                                                                     className="icon icon-question"
+                                                                     title="Rate is based on a 30 night stay.  Each additional night is billed at the nightly rate, then weekly rate, until the next 30 nights is reached for a single reservation."/></label>
                       <div className="pricelist" ng-init="season_data.month=0">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="seasonal_month_t" name="seasonal_month" value={this.state.seasonal_month} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="seasonal_month_t" name="seasonal_month"
+                               value={this.state.seasonal_month} onChange={this.handleChangeModal}
+                               className="tooltipstered"/>
                       </div>
-                      <p data-error="month" className="ml-error" />
+                      <p data-error="month" className="ml-error"/>
                     </div>
                   </div>
                   <div className="ses_time">
-                    <div className="col-md-6 col-sm-6 col-6 ses_pop1" >
-                      <label className="h6 my-auto">Weekend Price <i rel="tooltip" className="icon icon-question" title="Rate charged for weekend reservations.  Please note, if a reservation includes both a weekday & weekend your listing rate will be displayed as an average of the base nightly rate and the weekend rate." /></label>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Weekend Price <i rel="tooltip"
+                                                                     className="icon icon-question"
+                                                                     title="Rate charged for weekend reservations.  Please note, if a reservation includes both a weekday & weekend your listing rate will be displayed as an average of the base nightly rate and the weekend rate."/></label>
                       <div className="pricelist">
-                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-                        <input type="text" id="seasonal_weekend_t" name="seasonal_weekend" value={this.state.seasonal_weekend} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className="price_doller"
+                             dangerouslySetInnerHTML={{__html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$'}}></div>
+                        <input type="text" id="seasonal_weekend_t" name="seasonal_weekend"
+                               value={this.state.seasonal_weekend} onChange={this.handleChangeModal}
+                               className="tooltipstered"/>
                       </div>
                     </div>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
-                      <label className="h6 my-auto">Minimum Stay   <i rel="tooltip" className="icon icon-question" title="Minimum amount of nights required for a reservation" /></label>
+                      <label className="h6 my-auto">Minimum Stay <i rel="tooltip"
+                                                                    className="icon icon-question"
+                                                                    title="Minimum amount of nights required for a reservation"/></label>
                       <div className="pricelist">
-                        <input type="text" id="seasonal_minimum_stay_t" name="seasonal_minimum_stay" value={this.state.seasonal_minimum_stay} onChange={this.handleChangeModal} className="tooltipstered" />
-                        <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                        <input type="text" id="seasonal_minimum_stay_t" name="seasonal_minimum_stay"
+                               value={this.state.seasonal_minimum_stay}
+                               onChange={this.handleChangeModal} className="tooltipstered"/>
+                        <div className='col-md-12'><b className="text-danger">*</b> Required Field
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="btn-group d-flex">
                     <div className="col-md-6 col-sm-6 col-6 text-left">
-                      <button className={`day_cancel cancel_reservation   d-none `} type="button" id="cancel_season_t">Cancel</button>
+                      <button className={`day_cancel cancel_reservation   d-none `} type="button"
+                              id="cancel_season_t">Cancel
+                      </button>
                     </div>
-                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
-                      <button className="day_save" type="submit" id="save_season_t" name="save">Save</button>
-                      <button type="button" className={`    d-none   day_save delete_seasonal mt-2 bg-danger ml-2`} id="delete_season_t">Delete</button>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right"
+                         style={{'align-items': 'center'}}>
+                      <button className="day_save" type="submit" id="save_season_t" name="save">Save
+                      </button>
+                      <button type="button"
+                              className={`    d-none   day_save delete_seasonal mt-2 bg-danger ml-2`}
+                              id="delete_season_t">Delete
+                      </button>
                       {
                         (this.state.on_saving) ?
-                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            (<div className="spinner-border" role="status"><span
+                                className="sr-only">Removing...</span></div>)
                             : null
                       }
                     </div>
                   </div>
-                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                  <div className="loading global-ajax-form-loader" style={{visibility: 'hidden'}}/>
                 </div>
               </form>
             </TabPanel>
 
             <TabPanel>
-              <form id="unavailable_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingBlocked} >
+              <form id="unavailable_form_t" data-mode="create" className=" " noValidate="novalidate"
+                    onSubmit={this.handleBookingBlocked}>
                 <div className="seasonal_price">
                   <div className="ses_time datepicker-wrapper">
-                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
+                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered"/>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop row">
                       <label className="h6 my-auto">Start Date </label>
                       <DatePicker
                           selected={this.state.startDate}
                           onChange={this.handleStartDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
                       <label className="h6 my-auto">End Date </label>
@@ -986,33 +1178,45 @@ class RoomCalendar extends React.Component {
                           selected={this.state.endDate}
                           onChange={this.handleEndDatePickerChange}
                       />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation or blocked date range, you can select a new range of dates or update the other added reservation/blocked date range.</span>
+                    <span id="check_date_err" className="check_date_err"
+                          style={{display: 'none', color: 'red'}}>Your date is already in another reservation or blocked date range, you can select a new range of dates or update the other added reservation/blocked date range.</span>
                   </div>
                   <div className="ses_time">
                     <div className="col-md-12 col-sm-12 col-12 ses_pop1">
-                      <label className="h6 my-auto">Name <i rel="tooltip" className="icon icon-question" title="Each blocked date range must be unique.  Please note:  guests cannot checkin or checkout on the start/end dates of a blocked date range. " /></label>
-                      <input type="text" id="unavailable_name_t" name="unavailable_name" value={this.state.unavailable_name} onChange={this.handleChangeModal} className="tooltipstered" />
-                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      <label className="h6 my-auto">Name <i rel="tooltip"
+                                                            className="icon icon-question"
+                                                            title="Each blocked date range must be unique.  Please note:  guests cannot checkin or checkout on the start/end dates of a blocked date range. "/></label>
+                      <input type="text" id="unavailable_name_t" name="unavailable_name"
+                             value={this.state.unavailable_name} onChange={this.handleChangeModal}
+                             className="tooltipstered"/>
+                      <div className='col-md-12'><b className="text-danger">*</b> Required Field</div>
                     </div>
-                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
+                    <span id="err_msg"
+                          style={{display: 'none', color: 'red'}}>Season name Already used</span>
                   </div>
                   <div className="btn-group d-flex">
                     <div className="col-md-6 col-sm-6 col-6 text-left">
-                      <Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_unavailable_t">Cancel</Link>
+                      <Link to="#" className="day_cancel cancel_reservation d-none"
+                            id="cancel_unavailable_t">Cancel</Link>
                     </div>
-                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
-                      <button className="day_save" type="submit" id="save_unavailable_t" name="save">Save</button>
-                      <Link to="#" className="day_delete d-none delete_not_available mt-2" id="delete_unavailable_t">Delete</Link>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right"
+                         style={{'align-items': 'center'}}>
+                      <button className="day_save" type="submit" id="save_unavailable_t"
+                              name="save">Save
+                      </button>
+                      <Link to="#" className="day_delete d-none delete_not_available mt-2"
+                            id="delete_unavailable_t">Delete</Link>
                       {
                         (this.state.on_saving) ?
-                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            (<div className="spinner-border" role="status"><span
+                                className="sr-only">Removing...</span></div>)
                             : null
                       }
                     </div>
                   </div>
-                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                  <div className="loading global-ajax-form-loader" style={{visibility: 'hidden'}}/>
                 </div>
               </form>
             </TabPanel>
@@ -1022,9 +1226,9 @@ class RoomCalendar extends React.Component {
 
     const yes_no_modal = (
         <Modal
-            open={ this.state.open_yesno_mdl }
-            onClose={()=>this.setState({open_yesno_mdl : false})}
-            styles={{ modal : { padding : '0px'} }}
+            open={this.state.open_yesno_mdl}
+            onClose={() => this.setState({open_yesno_mdl: false})}
+            styles={{modal: {padding: '0px'}}}
             center
         >
           <div className="modal-header reservation-remove">
@@ -1034,12 +1238,13 @@ class RoomCalendar extends React.Component {
             <p>{this.state.alert_content}</p>
             {
               (this.state.on_removing) ?
-                  (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                  (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span>
+                  </div>)
                   : null
             }
           </div>
           <div className="modal-footer reservation-remove">
-            <button className="btn btn-info btn-cancel" onClick={() => this.setState({open_yesno_mdl : false})}>
+            <button className="btn btn-info btn-cancel" onClick={() => this.setState({open_yesno_mdl: false})}>
               Cancel
             </button>
             <button className="btn btn-danger btn-remove" onClick={() => this.handleRemove()}>
@@ -1064,20 +1269,26 @@ class RoomCalendar extends React.Component {
               <div className="common_listpage">
                 <div className="content_right w-100">
                   {/* roomId */}
-                  <Link to={`/rooms/manage/${this.props.match.params.room_id}/terms`} className="right_save" >Next</Link>
+                  <Link to={`/rooms/manage/${this.props.match.params.room_id}/terms`}
+                        className="right_save">Next</Link>
                   <Link to="#" className="right_save" onClick={this.handleImportCalendar}> Import </Link>
-                  <Link to="#" className=" right_save_continue" onClick={this.handleExportCalendar}>Export </Link>
+                  <Link to="#" className=" right_save_continue"
+                        onClick={this.handleExportCalendar}>Export </Link>
                   {/* <Link to="/manage/terms" className="right_save_continue" >Next</to> */}
                 </div>
-                <div >
+                <div>
                   <BookingCalendar
                       parentHandleEdit={this.handleEdit.bind(this)}
                       resetDateRange={click => this.resetHandler = click}
                       calendarData={month_calendar_data}
-                      updateCurrentMonth={month => { this.setState({ currentMonth: month }, () => { this.bookingCalendarInit() }) }}
+                      updateCurrentMonth={month => {
+                        this.setState({currentMonth: month}, () => {
+                          this.bookingCalendarInit()
+                        })
+                      }}
                       seasonal_calendar={this.state.seasonal_calendar}
                       unavailable_dates={this.state.unavailable_dates}
-                      onSelectedRange={(start_date, end_date) => this.onSelectedRange(start_date, end_date)} />
+                      onSelectedRange={(start_date, end_date) => this.onSelectedRange(start_date, end_date)}/>
                 </div>
               </div>
             </div>
@@ -1085,7 +1296,7 @@ class RoomCalendar extends React.Component {
               {/* Reservation */}
               <div className="row">
                 <div className="p-header-line col-sm-12">
-                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <FontAwesomeIcon className="book-mark" icon={faBook}/>
                   <p className="p-title">Reservation </p>
                 </div>
                 <div className="col-sm-12 p-0">
@@ -1104,7 +1315,7 @@ class RoomCalendar extends React.Component {
               {/* Seasonal Rates */}
               <div className="row">
                 <div className="p-header-line col-sm-12">
-                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <FontAwesomeIcon className="book-mark" icon={faBook}/>
                   <p className="p-title">Seasonal Rates </p>
                 </div>
                 <div className="col-sm-12 p-0">
@@ -1125,7 +1336,7 @@ class RoomCalendar extends React.Component {
               {/* Blocked */}
               <div className="row">
                 <div className="p-header-line col-sm-12">
-                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <FontAwesomeIcon className="book-mark" icon={faBook}/>
                   <p className="p-title">Blocked </p>
                 </div>
                 <div className="col-sm-12 p-0">

@@ -19,7 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import 'assets/styles/rooms/room_calendar.scss';
 
 class RoomCalendar extends React.Component {
-	constructor(props) {
+  constructor(props) {
     super(props)
     this.state = {
       tabIndex: 0,
@@ -108,10 +108,10 @@ class RoomCalendar extends React.Component {
     this.handleRemoveModal = this.handleRemoveModal.bind(this)
   }
 
-	componentDidMount () {
+  componentDidMount () {
     this.bookingCalendarInit();
-	}
-	
+  }
+
   bookingCalendarInit () {
     const room_id = this.props.match.params.room_id;
 
@@ -160,7 +160,7 @@ class RoomCalendar extends React.Component {
 
     const room_id = this.props.match.params.room_id;
     const req = {
-      url: this.state.ical_url, 
+      url: this.state.ical_url,
       name: this.state.ical_name,
       req_type: 'check'
     }
@@ -186,12 +186,12 @@ class RoomCalendar extends React.Component {
     if (this.state.edit_blocked) {
       let blocked_data = this.state.month_calendar_data.not_available_dates[this.state.edit_blocked_index];
 
-      blocked_data.seasonal_name = 
-        blocked_data.seasonal_name === '' || 
-        blocked_data.seasonal_name === undefined || 
-        blocked_data.seasonal_name === null ? 
-        "no name" : 
-        blocked_data.seasonal_name;
+      blocked_data.seasonal_name =
+          blocked_data.seasonal_name === '' ||
+          blocked_data.seasonal_name === undefined ||
+          blocked_data.seasonal_name === null ?
+              "no name" :
+              blocked_data.seasonal_name;
 
       data = {
         room_id: this.props.match.params.room_id,
@@ -244,13 +244,13 @@ class RoomCalendar extends React.Component {
 
     if (this.state.edit_reservation) {
       let reservation_data = this.state.month_calendar_data.reservation_detail[this.state.edit_reservation_index];
-      reservation_data.seasonal_name = 
-        reservation_data.seasonal_name === '' || 
-        reservation_data.seasonal_name === undefined || 
-        reservation_data.seasonal_name === null ? 
-        "no name" : 
-        reservation_data.seasonal_name;
-      
+      reservation_data.seasonal_name =
+          reservation_data.seasonal_name === '' ||
+          reservation_data.seasonal_name === undefined ||
+          reservation_data.seasonal_name === null ?
+              "no name" :
+              reservation_data.seasonal_name;
+
       data = {
         start_date: Utils._.formatYmdDate(this.state.startDate),
         end_date: Utils._.formatYmdDate(this.state.endDate),
@@ -275,7 +275,7 @@ class RoomCalendar extends React.Component {
         notes: this.state.reservation_notes,
         reservation_source: 'Calendar',
         price: this.state.reservation_price !== '' ? this.state.reservation_price : 0,
-        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0
+        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0,
       };
     }
 
@@ -308,12 +308,12 @@ class RoomCalendar extends React.Component {
 
     if (this.state.edit_season) {
       let seasonal_data = this.state.month_calendar_data.seasonal_price_detail[this.state.edit_season_index];
-      seasonal_data.seasonal_name = 
-        seasonal_data.seasonal_name === '' || 
-        seasonal_data.seasonal_name === undefined || 
-        seasonal_data.seasonal_name === null ? 
-        "no name" : 
-        seasonal_data.seasonal_name;
+      seasonal_data.seasonal_name =
+          seasonal_data.seasonal_name === '' ||
+          seasonal_data.seasonal_name === undefined ||
+          seasonal_data.seasonal_name === null ?
+              "no name" :
+              seasonal_data.seasonal_name;
 
       data = {
         guests: this.state.seasonal_guests,
@@ -357,7 +357,7 @@ class RoomCalendar extends React.Component {
       if (res && res.success === 'true') {
         this.closeReservationModal();
         this.bookingCalendarInit();
-       alertService.showSuccess('Save Seasnal Prices', 'Successfully!');
+        alertService.showSuccess('Save Seasnal Prices', 'Successfully!');
       } else {
         let error_message = "";
         Object.keys(res.errors).map((key, index) => {
@@ -579,7 +579,7 @@ class RoomCalendar extends React.Component {
       default:
         break;
     }
-    this.setState({ 
+    this.setState({
       open_yesno_mdl: true,
       alert_title: alert_title,
       alert_content: alert_content,
@@ -706,444 +706,444 @@ class RoomCalendar extends React.Component {
         </div>
       }
 
-		]
-		
-		const import_calendar_modal = (
-			<Modal
-				open={this.state.open_import_modal}
-				styles={{ modal: { padding: '0px' } }}
-				onClose={() => { this.setState({ open_import_modal: false }) }}>
-				<div className="panel import-calendar">
-					<div className="panel-header">
-						<span>Import a New Calendar</span>
-						<Link to="#" data-behavior="modal-close" className="modal-close" onClick={() => { this.setState({ open_import_modal: false }) }}>
-						</Link>
-					</div>
-					<div className="panel-body">
-						<p style={{ marginBottom: '20px' }}>
-							<span>Import other calendars you use and we’ll automatically keep this listing’s availability up-to-date.</span>
-						</p>
-						<form method="POST" onSubmit={this.handeImportCalendarAction} acceptCharset="UTF-8" name="export" id="feed_import_form" className="ng-pristine ng-valid">
-							<div className="content">
-                <label style={{ marginBottom: '20px' }}>
-                  <p style={{ marginBottom: '10px' }} className="label">
-                    <span>Calendar Address (URL)</span>
-                  </p>
-                  <input type="text" name="ical_url" value={this.state.ical_url} onChange={this.handleChangeModal} placeholder="Paste calendar address (URL) here" className="space-1 " />
-                  <span className="text-danger" />
-                </label>
-                <label style={{ marginBottom: 0 }}>
-                  <p style={{ marginBottom: '10px' }} className="label">
-                    <span>Name Your Calendar</span>
-                  </p>
-                  <input type="text" name="ical_name" value={this.state.ical_name} onChange={this.handleChangeModal} placeholder="Custom name for this calendar" className="space-1 " />
-                  <span className="text-danger" />
-                </label>
-              </div>
-              
-							<div className="d-inline-block" style={{ marginTop: '20px' }}>
-								<button id="feed_import_btn" data-prevent-default="true" className="btn btn-primary" ng-disabled="export.$invalid">
-									<span>Import Calendar</span>
-								</button>
-							</div>
-						</form>
-					</div>
-					<div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
-				</div>
-			</Modal>
-		)
+    ]
 
-		const export_calendar_modal = (
-			<Modal
-				open={this.state.open_export_modal}
-				styles={{ modal: { padding: '0px' } }}
-				onClose={() => { this.setState({ open_export_modal: false }) }}
-			>
-				<div className="export-calendar panel">
-					<div className="panel-header">
-						<span>Export Calendar</span>
-						<Link data-behavior="modal-close" className="modal-close" to="#" onClick={() => { this.setState({ open_export_modal: false }) }}>
-						</Link>
-					</div>
-					<div className="panel-body">
-						<p>
-							<span>Copy and paste the link into other ICAL applications</span>
-						</p>
-						<input type="text" defaultValue={`${window.location.origin}/calendar/ical/${this.props.match.params.room_id}`} readOnly />
-					</div>
-				</div>
-			</Modal>
-		)
+    const import_calendar_modal = (
+        <Modal
+            open={this.state.open_import_modal}
+            styles={{ modal: { padding: '0px' } }}
+            onClose={() => { this.setState({ open_import_modal: false }) }}>
+          <div className="panel import-calendar">
+            <div className="panel-header">
+              <span>Import a New Calendar</span>
+              <Link to="#" data-behavior="modal-close" className="modal-close" onClick={() => { this.setState({ open_import_modal: false }) }}>
+              </Link>
+            </div>
+            <div className="panel-body">
+              <p style={{ marginBottom: '20px' }}>
+                <span>Import other calendars you use and we’ll automatically keep this listing’s availability up-to-date.</span>
+              </p>
+              <form method="POST" onSubmit={this.handeImportCalendarAction} acceptCharset="UTF-8" name="export" id="feed_import_form" className="ng-pristine ng-valid">
+                <div className="content">
+                  <label style={{ marginBottom: '20px' }}>
+                    <p style={{ marginBottom: '10px' }} className="label">
+                      <span>Calendar Address (URL)</span>
+                    </p>
+                    <input type="text" name="ical_url" value={this.state.ical_url} onChange={this.handleChangeModal} placeholder="Paste calendar address (URL) here" className="space-1 " />
+                    <span className="text-danger" />
+                  </label>
+                  <label style={{ marginBottom: 0 }}>
+                    <p style={{ marginBottom: '10px' }} className="label">
+                      <span>Name Your Calendar</span>
+                    </p>
+                    <input type="text" name="ical_name" value={this.state.ical_name} onChange={this.handleChangeModal} placeholder="Custom name for this calendar" className="space-1 " />
+                    <span className="text-danger" />
+                  </label>
+                </div>
 
-		const reservation_modal = (
-			<Modal
-				open={this.state.open_modal}
-				styles={{ modal: { padding: '0px' }}}
-        className="reservation-modal"
-				onClose={() => this.closeReservationModal()}
-			>
-				<Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-					<TabList className="tabs tabba form-tab-header">
-						<h3 className="ml-0">
-							Calendar Settings
-            </h3>
-						<Tab className="tab-item text-lead h5 mylists">Reservation</Tab>
-						<Tab className="tab-item text-lead h5 mylists">Seasonal Rates</Tab>
-						<Tab className="tab-item text-lead h5 mylists">Blocked</Tab>
+                <div className="d-inline-block" style={{ marginTop: '20px' }}>
+                  <button id="feed_import_btn" data-prevent-default="true" className="btn btn-primary" ng-disabled="export.$invalid">
+                    <span>Import Calendar</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+          </div>
+        </Modal>
+    )
 
-					</TabList>
-					<TabPanel>
-						<div className="seasonal_price">
-							<form id="reservation_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingReservation}>
-								<div className="ses_time datepicker-wrapper">
-									<div className="col-md-6 col-sm-6 col-6 ses_pop row">
-										<label className="h6 my-auto">Check in</label>
-										<DatePicker
-											selected={this.state.startDate}
-											onChange={this.handleStartDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
-										<label className="h6 my-auto">Check out </label>
-										<DatePicker
-											selected={this.state.endDate}
-											onChange={this.handleEndDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation, you can cancel/delete it, select a new range of dates or edit the other reservation.</span>
-
-								</div>
-								<div className="ses_time">
-									<div className="col-md-12 col-sm-12 col-12 ses_pop1">
-										<label className="h6 my-auto">Name   <i rel="tooltip" className="icon icon-question" title="Each reservation name must be unique." /></label>
-										<input type="text" id="reservation_name_t" name="reservation_name" value={this.state.reservation_name} onChange={this.handleChangeModal} className="tooltipstered" />
-									</div>
-									<span id="err_msg" style={{ display: 'none', color: 'red' }}>Reservation name already used</span>
-									<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Price </label>
-										<div className="pricelist">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="reservation_price_t" name="reservation_price" value={this.state.reservation_price} onChange={this.handleChangeModal} className="  tooltipstered valid " aria-invalid="false" />
-										</div>
-										<p data-error="price" className="ml-error" />
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Number of Guests <i rel="tooltip" className="icon icon-question" title="Number of guests for the reservation." /></label>
-										<div className="pricelist">
-											<input type="number" id="reservation_guests_t" name="reservation_guests" value={this.state.reservation_guests} onChange={this.handleChangeModal} className="tooltipstered" />
-										</div>
-									</div>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-12 col-sm-12 col-12 ses_pop1">
-										<label className="h6 my-auto">Note   <i rel="tooltip" className="icon icon-question" title="Add additional notes to your reservation." /></label>
-										<textarea id="reservation_note_t" name="reservation_notes" value={this.state.reservation_notes} onChange={this.handleChangeModal} className="tooltipstered" />
-									</div>
-									<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									<span id="err_msg" style={{ display: 'none', color: 'red' }}>Note required</span>
-								</div>
-								<div className="btn-group d-flex">
-									<div className="col-md-6 col-sm-6 col-6 text-left">
-										<Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_reservation_t">Cancel</Link>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'alignItems': 'center'}}>
-										<button className="day_save" type="submit" id="save_reservation_t" name="save">Save</button>
-										<Link to="#" className="day_delete d-none delete_reservation mt-2" id="delete_reservation_t">Delete</Link>
-										{
-											(this.state.on_saving) ?
-											(<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
-											: null
-										}
-									</div>
-								</div>
-								<div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
-							</form>
-						</div>
-					</TabPanel>
-					<TabPanel>
-						<form id="season_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingSeasonal}>
-							<div className="seasonal_price">
-								<div className="ses_time datepicker-wrapper">
-									<input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
-									<div className="col-md-6 col-sm-6 col-6 ses_pop row">
-										<label className="h6 my-auto">Start Date </label>
-										<DatePicker
-											selected={this.state.startDate}
-											onChange={this.handleStartDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
-										<label className="h6 my-auto">End Date </label>
-										<DatePicker
-											selected={this.state.endDate}
-											onChange={this.handleEndDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another season, you can mark it as closed, select a new range of dates or update the other added season.</span>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-12 col-sm-12 col-12 ses_pop1">
-										<label className="h6 my-auto">Season Name   <i rel="tooltip" className="icon icon-question" title="Each seasonal name must be unique.  If this is an annual or recurring season, try appending the year to the end of the name (i.e. Summer 2018, Summer 2019, etc" /></label>
-										<input type="text" id="season_name_t" name="seasonal_name" value={this.state.seasonal_name} onChange={this.handleChangeModal} className="tooltipstered" />
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Price </label>
-										<div className="pricelist">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="seasonal_price_t" name="seasonal_price" value={this.state.seasonal_price} onChange={this.handleChangeModal} className="tooltipstered" />
-										</div>
-										<p data-error="price" className="ml-error" />
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Price for extra Guest <i rel="tooltip" className="icon icon-question" title="Extra cost per guest per day" /></label>
-										<div className="pricelist">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="seasonal_additional_price_t" name="seasonal_guests" value={this.state.seasonal_guests} onChange={this.handleChangeModal} className="tooltipstered" />
-
-										</div>
-									</div>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto"> Weekly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 7 night stay, each additional night is billed at the standard nightly rate up until the next 7 nights is reached for a single reservation." /></label>
-										<div className="pricelist" ng-init="season_data.week=0">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="seasonal_week_t" name="seasonal_week" value={this.state.seasonal_week} onChange={this.handleChangeModal} className="tooltipstered" />
-										</div>
-										<p data-error="week" className="ml-error" />
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Monthly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 30 night stay.  Each additional night is billed at the nightly rate, then weekly rate, until the next 30 nights is reached for a single reservation." /></label>
-										<div className="pricelist" ng-init="season_data.month=0">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="seasonal_month_t" name="seasonal_month" value={this.state.seasonal_month} onChange={this.handleChangeModal} className="tooltipstered" />
-										</div>
-										<p data-error="month" className="ml-error" />
-									</div>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1" >
-										<label className="h6 my-auto">Weekend Price <i rel="tooltip" className="icon icon-question" title="Rate charged for weekend reservations.  Please note, if a reservation includes both a weekday & weekend your listing rate will be displayed as an average of the base nightly rate and the weekend rate." /></label>
-										<div className="pricelist">
-											<div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
-											<input type="text" id="seasonal_weekend_t" name="seasonal_weekend" value={this.state.seasonal_weekend} onChange={this.handleChangeModal} className="tooltipstered" />
-										</div>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1">
-										<label className="h6 my-auto">Minimum Stay   <i rel="tooltip" className="icon icon-question" title="Minimum amount of nights required for a reservation" /></label>
-										<div className="pricelist">
-											<input type="text" id="seasonal_minimum_stay_t" name="seasonal_minimum_stay" value={this.state.seasonal_minimum_stay} onChange={this.handleChangeModal} className="tooltipstered" />
-											<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-										</div>
-									</div>
-								</div>
-								<div className="btn-group d-flex">
-									<div className="col-md-6 col-sm-6 col-6 text-left">
-										<button className={`day_cancel cancel_reservation   d-none `} type="button" id="cancel_season_t">Cancel</button>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
-										<button className="day_save" type="submit" id="save_season_t" name="save">Save</button>
-										<button type="button" className={`    d-none   day_save delete_seasonal mt-2 bg-danger ml-2`} id="delete_season_t">Delete</button>
-										{
-											(this.state.on_saving) ?
-											(<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
-											: null
-										}
-									</div>
-								</div>
-								<div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
-							</div>
-						</form>
-					</TabPanel>
-
-					<TabPanel>
-						<form id="unavailable_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingBlocked} >
-							<div className="seasonal_price">
-								<div className="ses_time datepicker-wrapper">
-									<input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
-									<div className="col-md-6 col-sm-6 col-6 ses_pop row">
-										<label className="h6 my-auto">Start Date </label>
-										<DatePicker
-											selected={this.state.startDate}
-											onChange={this.handleStartDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
-										<label className="h6 my-auto">End Date </label>
-										<DatePicker
-											selected={this.state.endDate}
-											onChange={this.handleEndDatePickerChange}
-										/>
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation or blocked date range, you can select a new range of dates or update the other added reservation/blocked date range.</span>
-								</div>
-								<div className="ses_time">
-									<div className="col-md-12 col-sm-12 col-12 ses_pop1">
-										<label className="h6 my-auto">Name <i rel="tooltip" className="icon icon-question" title="Each blocked date range must be unique.  Please note:  guests cannot checkin or checkout on the start/end dates of a blocked date range. " /></label>
-										<input type="text" id="unavailable_name_t" name="unavailable_name" value={this.state.unavailable_name} onChange={this.handleChangeModal} className="tooltipstered" />
-										<div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
-									</div>
-									<span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
-								</div>
-								<div className="btn-group d-flex">
-									<div className="col-md-6 col-sm-6 col-6 text-left">
-										<Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_unavailable_t">Cancel</Link>
-									</div>
-									<div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
-										<button className="day_save" type="submit" id="save_unavailable_t" name="save">Save</button>
-										<Link to="#" className="day_delete d-none delete_not_available mt-2" id="delete_unavailable_t">Delete</Link>
-										{
-											(this.state.on_saving) ?
-											(<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
-											: null
-										}
-									</div>
-								</div>
-								<div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
-							</div>
-						</form>
-					</TabPanel>
-				</Tabs>
-			</Modal>
-		)
-
-		const yes_no_modal = (
-			<Modal 
-				open={ this.state.open_yesno_mdl } 
-				onClose={()=>this.setState({open_yesno_mdl : false})} 
-				styles={{ modal : { padding : '0px'} }} 
-				center
-			>
-				<div className="modal-header reservation-remove">
-					<h4>{this.state.alert_title}</h4>
-				</div>
-				<div className="modal-body d-flex reservation-remove">
-					<p>{this.state.alert_content}</p>
-					{
-						(this.state.on_removing) ?
-						(<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
-						: null
-					}
-				</div>
-				<div className="modal-footer reservation-remove">
-					<button className="btn btn-info btn-cancel" onClick={() => this.setState({open_yesno_mdl : false})}> 
-						Cancel 
-					</button>
-					<button className="btn btn-danger btn-remove" onClick={() => this.handleRemove()}> 
-						Remove 
-					</button>
-				</div>
-			</Modal>
-		)
-
-    return (
-      <div className="room-calendar manage-listing-content-wrapper clearfix">
-        {import_calendar_modal}
-				{export_calendar_modal}
-				{reservation_modal}
-				{yes_no_modal}
-        <ManageRoomHeader
-          title="Listing Availability" 
-          descr="Use the calendar below to restrict your listing availability and create custom seasonal pricing for specific dates." 
-          />
-        <div className="row d-flex m-0" style={{paddingRight: '15px'}}>
-          <div className="listing_whole col-md-9" id="js-manage-listing-content">
-            <div className="common_listpage">
-              <div className="content_right w-100">
-                {/* roomId */}
-                <Link to={`/rooms/manage/${this.props.match.params.room_id}/terms`} className="right_save" >Next</Link>
-                <Link to="#" className="right_save" onClick={this.handleImportCalendar}> Import </Link>
-                <Link to="#" className=" right_save_continue" onClick={this.handleExportCalendar}>Export </Link>
-                {/* <Link to="/manage/terms" className="right_save_continue" >Next</to> */}
-              </div>
-              <div >
-                <BookingCalendar 
-                  parentHandleEdit={this.handleEdit.bind(this)} 
-                  resetDateRange={click => this.resetHandler = click} 
-                  calendarData={month_calendar_data} 
-                  updateCurrentMonth={month => { this.setState({ currentMonth: month }, () => { this.bookingCalendarInit() }) }}
-                  seasonal_calendar={this.state.seasonal_calendar} 
-                  unavailable_dates={this.state.unavailable_dates}
-                  onSelectedRange={(start_date, end_date) => this.onSelectedRange(start_date, end_date)} />
-              </div>
+    const export_calendar_modal = (
+        <Modal
+            open={this.state.open_export_modal}
+            styles={{ modal: { padding: '0px' } }}
+            onClose={() => { this.setState({ open_export_modal: false }) }}
+        >
+          <div className="export-calendar panel">
+            <div className="panel-header">
+              <span>Export Calendar</span>
+              <Link data-behavior="modal-close" className="modal-close" to="#" onClick={() => { this.setState({ open_export_modal: false }) }}>
+              </Link>
+            </div>
+            <div className="panel-body">
+              <p>
+                <span>Copy and paste the link into other ICAL applications</span>
+              </p>
+              <input type="text" defaultValue={`${window.location.origin}/calendar/ical/${this.props.match.params.room_id}`} readOnly />
             </div>
           </div>
-          <div className="col-md-3 import_calander border-left">
-            {/* Reservation */}
-            <div className="row">
-              <div className="p-header-line col-sm-12">
-                <FontAwesomeIcon className="book-mark" icon={faBook} />
-                <p className="p-title">Reservation </p>
-              </div>
-              <div className="col-sm-12 p-0">
-                <RatePanel
-                  data={month_calendar_data && month_calendar_data.reservation_detail ? month_calendar_data.reservation_detail : []}
-                  columns={reservation_columns}
-                  type={2}
-                  handleEdit={this.handleEdit.bind(this)}
-                  handleRemove={this.handleRemoveModal.bind(this)}
-                  namefield='Name'
-                  propertyname='Nights'
-                  propertyid='duration'
-                />
-              </div>
-            </div>
-            {/* Seasonal Rates */}
-            <div className="row">
-              <div className="p-header-line col-sm-12">
-                <FontAwesomeIcon className="book-mark" icon={faBook} />
-                <p className="p-title">Seasonal Rates </p>
-              </div>
-              <div className="col-sm-12 p-0">
-                <RatePanel
-                  data={month_calendar_data && month_calendar_data.seasonal_price_detail ? month_calendar_data.seasonal_price_detail : []}
-                  columns={seasonal_columns}
-                  type={1}
-                  handleEdit={this.handleEdit.bind(this)}
-                  handleRemove={this.handleRemoveModal.bind(this)}
-                  namefield='Seasonal Name'
-                  propertyname='Rates'
-                  propertyid='price'
-                >
-                </RatePanel>
+        </Modal>
+    )
 
+    const reservation_modal = (
+        <Modal
+            open={this.state.open_modal}
+            styles={{ modal: { padding: '0px' }}}
+            className="reservation-modal"
+            onClose={() => this.closeReservationModal()}
+        >
+          <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+            <TabList className="tabs tabba form-tab-header">
+              <h3 className="ml-0">
+                Calendar Settings
+              </h3>
+              <Tab className="tab-item text-lead h5 mylists">Reservation</Tab>
+              <Tab className="tab-item text-lead h5 mylists">Seasonal Rates</Tab>
+              <Tab className="tab-item text-lead h5 mylists">Blocked</Tab>
+
+            </TabList>
+            <TabPanel>
+              <div className="seasonal_price">
+                <form id="reservation_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingReservation}>
+                  <div className="ses_time datepicker-wrapper">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop row">
+                      <label className="h6 my-auto">Check in</label>
+                      <DatePicker
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
+                      <label className="h6 my-auto">Check out </label>
+                      <DatePicker
+                          selected={this.state.endDate}
+                          onChange={this.handleEndDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation, you can cancel/delete it, select a new range of dates or edit the other reservation.</span>
+
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-12 col-sm-12 col-12 ses_pop1">
+                      <label className="h6 my-auto">Name   <i rel="tooltip" className="icon icon-question" title="Each reservation name must be unique." /></label>
+                      <input type="text" id="reservation_name_t" name="reservation_name" value={this.state.reservation_name} onChange={this.handleChangeModal} className="tooltipstered" />
+                    </div>
+                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Reservation name already used</span>
+                    <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Price </label>
+                      <div className="pricelist">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="reservation_price_t" name="reservation_price" value={this.state.reservation_price} onChange={this.handleChangeModal} className="  tooltipstered valid " aria-invalid="false" />
+                      </div>
+                      <p data-error="price" className="ml-error" />
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Number of Guests <i rel="tooltip" className="icon icon-question" title="Number of guests for the reservation." /></label>
+                      <div className="pricelist">
+                        <input type="number" id="reservation_guests_t" name="reservation_guests" value={this.state.reservation_guests} onChange={this.handleChangeModal} className="tooltipstered" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-12 col-sm-12 col-12 ses_pop1">
+                      <label className="h6 my-auto">Note   <i rel="tooltip" className="icon icon-question" title="Add additional notes to your reservation." /></label>
+                      <textarea id="reservation_note_t" name="reservation_notes" value={this.state.reservation_notes} onChange={this.handleChangeModal} className="tooltipstered" />
+                    </div>
+                    <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Note required</span>
+                  </div>
+                  <div className="btn-group d-flex">
+                    <div className="col-md-6 col-sm-6 col-6 text-left">
+                      <Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_reservation_t">Cancel</Link>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'alignItems': 'center'}}>
+                      <button className="day_save" type="submit" id="save_reservation_t" name="save">Save</button>
+                      <Link to="#" className="day_delete d-none delete_reservation mt-2" id="delete_reservation_t">Delete</Link>
+                      {
+                        (this.state.on_saving) ?
+                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            : null
+                      }
+                    </div>
+                  </div>
+                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                </form>
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <form id="season_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingSeasonal}>
+                <div className="seasonal_price">
+                  <div className="ses_time datepicker-wrapper">
+                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop row">
+                      <label className="h6 my-auto">Start Date </label>
+                      <DatePicker
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
+                      <label className="h6 my-auto">End Date </label>
+                      <DatePicker
+                          selected={this.state.endDate}
+                          onChange={this.handleEndDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another season, you can mark it as closed, select a new range of dates or update the other added season.</span>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-12 col-sm-12 col-12 ses_pop1">
+                      <label className="h6 my-auto">Season Name   <i rel="tooltip" className="icon icon-question" title="Each seasonal name must be unique.  If this is an annual or recurring season, try appending the year to the end of the name (i.e. Summer 2018, Summer 2019, etc" /></label>
+                      <input type="text" id="season_name_t" name="seasonal_name" value={this.state.seasonal_name} onChange={this.handleChangeModal} className="tooltipstered" />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Price </label>
+                      <div className="pricelist">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="seasonal_price_t" name="seasonal_price" value={this.state.seasonal_price} onChange={this.handleChangeModal} className="tooltipstered" />
+                      </div>
+                      <p data-error="price" className="ml-error" />
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Price for extra Guest <i rel="tooltip" className="icon icon-question" title="Extra cost per guest per day" /></label>
+                      <div className="pricelist">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="seasonal_additional_price_t" name="seasonal_guests" value={this.state.seasonal_guests} onChange={this.handleChangeModal} className="tooltipstered" />
+
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto"> Weekly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 7 night stay, each additional night is billed at the standard nightly rate up until the next 7 nights is reached for a single reservation." /></label>
+                      <div className="pricelist" ng-init="season_data.week=0">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="seasonal_week_t" name="seasonal_week" value={this.state.seasonal_week} onChange={this.handleChangeModal} className="tooltipstered" />
+                      </div>
+                      <p data-error="week" className="ml-error" />
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Monthly Price <i rel="tooltip" className="icon icon-question" title="Rate is based on a 30 night stay.  Each additional night is billed at the nightly rate, then weekly rate, until the next 30 nights is reached for a single reservation." /></label>
+                      <div className="pricelist" ng-init="season_data.month=0">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="seasonal_month_t" name="seasonal_month" value={this.state.seasonal_month} onChange={this.handleChangeModal} className="tooltipstered" />
+                      </div>
+                      <p data-error="month" className="ml-error" />
+                    </div>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1" >
+                      <label className="h6 my-auto">Weekend Price <i rel="tooltip" className="icon icon-question" title="Rate charged for weekend reservations.  Please note, if a reservation includes both a weekday & weekend your listing rate will be displayed as an average of the base nightly rate and the weekend rate." /></label>
+                      <div className="pricelist">
+                        <div className="price_doller" dangerouslySetInnerHTML={{ __html: this.state.month_calendar_data.rooms_price ? this.state.month_calendar_data.rooms_price.currency.original_symbol : '$' }}></div>
+                        <input type="text" id="seasonal_weekend_t" name="seasonal_weekend" value={this.state.seasonal_weekend} onChange={this.handleChangeModal} className="tooltipstered" />
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1">
+                      <label className="h6 my-auto">Minimum Stay   <i rel="tooltip" className="icon icon-question" title="Minimum amount of nights required for a reservation" /></label>
+                      <div className="pricelist">
+                        <input type="text" id="seasonal_minimum_stay_t" name="seasonal_minimum_stay" value={this.state.seasonal_minimum_stay} onChange={this.handleChangeModal} className="tooltipstered" />
+                        <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="btn-group d-flex">
+                    <div className="col-md-6 col-sm-6 col-6 text-left">
+                      <button className={`day_cancel cancel_reservation   d-none `} type="button" id="cancel_season_t">Cancel</button>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
+                      <button className="day_save" type="submit" id="save_season_t" name="save">Save</button>
+                      <button type="button" className={`    d-none   day_save delete_seasonal mt-2 bg-danger ml-2`} id="delete_season_t">Delete</button>
+                      {
+                        (this.state.on_saving) ?
+                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            : null
+                      }
+                    </div>
+                  </div>
+                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                </div>
+              </form>
+            </TabPanel>
+
+            <TabPanel>
+              <form id="unavailable_form_t" data-mode="create" className=" " noValidate="novalidate" onSubmit={this.handleBookingBlocked} >
+                <div className="seasonal_price">
+                  <div className="ses_time datepicker-wrapper">
+                    <input type="hidden" name="room_id" defaultValue={11475} className="tooltipstered" />
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop row">
+                      <label className="h6 my-auto">Start Date </label>
+                      <DatePicker
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 ses_pop1 row">
+                      <label className="h6 my-auto">End Date </label>
+                      <DatePicker
+                          selected={this.state.endDate}
+                          onChange={this.handleEndDatePickerChange}
+                      />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <span id="check_date_err" className="check_date_err" style={{ display: 'none', color: 'red' }}>Your date is already in another reservation or blocked date range, you can select a new range of dates or update the other added reservation/blocked date range.</span>
+                  </div>
+                  <div className="ses_time">
+                    <div className="col-md-12 col-sm-12 col-12 ses_pop1">
+                      <label className="h6 my-auto">Name <i rel="tooltip" className="icon icon-question" title="Each blocked date range must be unique.  Please note:  guests cannot checkin or checkout on the start/end dates of a blocked date range. " /></label>
+                      <input type="text" id="unavailable_name_t" name="unavailable_name" value={this.state.unavailable_name} onChange={this.handleChangeModal} className="tooltipstered" />
+                      <div className='col-md-12'> <b className="text-danger">*</b> Required Field</div>
+                    </div>
+                    <span id="err_msg" style={{ display: 'none', color: 'red' }}>Season name Already used</span>
+                  </div>
+                  <div className="btn-group d-flex">
+                    <div className="col-md-6 col-sm-6 col-6 text-left">
+                      <Link to="#" className="day_cancel cancel_reservation d-none" id="cancel_unavailable_t">Cancel</Link>
+                    </div>
+                    <div className="col-md-6 col-sm-6 col-6 d-flex text-right" style={{'align-items': 'center'}}>
+                      <button className="day_save" type="submit" id="save_unavailable_t" name="save">Save</button>
+                      <Link to="#" className="day_delete d-none delete_not_available mt-2" id="delete_unavailable_t">Delete</Link>
+                      {
+                        (this.state.on_saving) ?
+                            (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                            : null
+                      }
+                    </div>
+                  </div>
+                  <div className="loading global-ajax-form-loader" style={{ visibility: 'hidden' }} />
+                </div>
+              </form>
+            </TabPanel>
+          </Tabs>
+        </Modal>
+    )
+
+    const yes_no_modal = (
+        <Modal
+            open={ this.state.open_yesno_mdl }
+            onClose={()=>this.setState({open_yesno_mdl : false})}
+            styles={{ modal : { padding : '0px'} }}
+            center
+        >
+          <div className="modal-header reservation-remove">
+            <h4>{this.state.alert_title}</h4>
+          </div>
+          <div className="modal-body d-flex reservation-remove">
+            <p>{this.state.alert_content}</p>
+            {
+              (this.state.on_removing) ?
+                  (<div className="spinner-border" role="status"><span className="sr-only">Removing...</span></div>)
+                  : null
+            }
+          </div>
+          <div className="modal-footer reservation-remove">
+            <button className="btn btn-info btn-cancel" onClick={() => this.setState({open_yesno_mdl : false})}>
+              Cancel
+            </button>
+            <button className="btn btn-danger btn-remove" onClick={() => this.handleRemove()}>
+              Remove
+            </button>
+          </div>
+        </Modal>
+    )
+
+    return (
+        <div className="room-calendar manage-listing-content-wrapper clearfix">
+          {import_calendar_modal}
+          {export_calendar_modal}
+          {reservation_modal}
+          {yes_no_modal}
+          <ManageRoomHeader
+              title="Listing Availability"
+              descr="Use the calendar below to restrict your listing availability and create custom seasonal pricing for specific dates."
+          />
+          <div className="row d-flex m-0" style={{paddingRight: '15px'}}>
+            <div className="listing_whole col-md-9" id="js-manage-listing-content">
+              <div className="common_listpage">
+                <div className="content_right w-100">
+                  {/* roomId */}
+                  <Link to={`/rooms/manage/${this.props.match.params.room_id}/terms`} className="right_save" >Next</Link>
+                  <Link to="#" className="right_save" onClick={this.handleImportCalendar}> Import </Link>
+                  <Link to="#" className=" right_save_continue" onClick={this.handleExportCalendar}>Export </Link>
+                  {/* <Link to="/manage/terms" className="right_save_continue" >Next</to> */}
+                </div>
+                <div >
+                  <BookingCalendar
+                      parentHandleEdit={this.handleEdit.bind(this)}
+                      resetDateRange={click => this.resetHandler = click}
+                      calendarData={month_calendar_data}
+                      updateCurrentMonth={month => { this.setState({ currentMonth: month }, () => { this.bookingCalendarInit() }) }}
+                      seasonal_calendar={this.state.seasonal_calendar}
+                      unavailable_dates={this.state.unavailable_dates}
+                      onSelectedRange={(start_date, end_date) => this.onSelectedRange(start_date, end_date)} />
+                </div>
               </div>
             </div>
-            {/* Blocked */}
-            <div className="row">
-              <div className="p-header-line col-sm-12">
-                <FontAwesomeIcon className="book-mark" icon={faBook} />
-                <p className="p-title">Blocked </p>
+            <div className="col-md-3 import_calander border-left">
+              {/* Reservation */}
+              <div className="row">
+                <div className="p-header-line col-sm-12">
+                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <p className="p-title">Reservation </p>
+                </div>
+                <div className="col-sm-12 p-0">
+                  <RatePanel
+                      data={month_calendar_data && month_calendar_data.reservation_detail ? month_calendar_data.reservation_detail : []}
+                      columns={reservation_columns}
+                      type={2}
+                      handleEdit={this.handleEdit.bind(this)}
+                      handleRemove={this.handleRemoveModal.bind(this)}
+                      namefield='Name'
+                      propertyname='Nights'
+                      propertyid='duration'
+                  />
+                </div>
               </div>
-              <div className="col-sm-12 p-0">
-                <RatePanel
-                  data={month_calendar_data && month_calendar_data.not_available_dates ? month_calendar_data.not_available_dates : []}
-                  columns={blocked_columns}
-                  type={3}
-                  handleRemove={this.handleRemoveModal.bind(this)}
-                  handleEdit={this.handleEdit.bind(this)}
-                  namefield='Title'
-                  propertyname='Days'
-                  propertyid='duration'
-                />
+              {/* Seasonal Rates */}
+              <div className="row">
+                <div className="p-header-line col-sm-12">
+                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <p className="p-title">Seasonal Rates </p>
+                </div>
+                <div className="col-sm-12 p-0">
+                  <RatePanel
+                      data={month_calendar_data && month_calendar_data.seasonal_price_detail ? month_calendar_data.seasonal_price_detail : []}
+                      columns={seasonal_columns}
+                      type={1}
+                      handleEdit={this.handleEdit.bind(this)}
+                      handleRemove={this.handleRemoveModal.bind(this)}
+                      namefield='Seasonal Name'
+                      propertyname='Rates'
+                      propertyid='price'
+                  >
+                  </RatePanel>
+
+                </div>
+              </div>
+              {/* Blocked */}
+              <div className="row">
+                <div className="p-header-line col-sm-12">
+                  <FontAwesomeIcon className="book-mark" icon={faBook} />
+                  <p className="p-title">Blocked </p>
+                </div>
+                <div className="col-sm-12 p-0">
+                  <RatePanel
+                      data={month_calendar_data && month_calendar_data.not_available_dates ? month_calendar_data.not_available_dates : []}
+                      columns={blocked_columns}
+                      type={3}
+                      handleRemove={this.handleRemoveModal.bind(this)}
+                      handleEdit={this.handleEdit.bind(this)}
+                      namefield='Title'
+                      propertyname='Days'
+                      propertyid='duration'
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     )
   }
 }

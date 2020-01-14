@@ -72,7 +72,36 @@ class RateItem extends React.Component {
             <p className="item-title col-lg-6 col-sm-6"> {name_field}</p>
             <p className="item-content col-lg-6 col-sm-6">
               {" "}
-              {this.props.data["seasonal_name"]}
+              {this.props.data["first_name"] ? `${this.props.data["first_name"]} ${this.props.data["last_name"]}` : this.props.data["seasonal_name"]}
+            </p>
+          </div>
+          <div className="col-sm-12">
+            <p className="item-title col-lg-6 col-sm-6"> Email</p>
+            <p className="item-content col-lg-6 col-sm-6">
+              {" "}
+              {this.props.data["email"]}
+            </p>
+          </div>
+          <div className="col-sm-12">
+            <p className="item-title col-lg-6 col-sm-6"> Phone Number</p>
+            <p className="item-content col-lg-6 col-sm-6">
+              {" "}
+              {this.props.data["phone_number"]}
+            </p>
+          </div>
+          <div className="col-sm-12">
+            <p className="item-title col-lg-6 col-sm-6"> Street Address</p>
+            <p className="item-content col-lg-6 col-sm-6">
+              {" "}
+              {this.props.data["street_address_1"]}
+              {this.props.data["street_address_2"] ? ", " + this.props.data["street_address_2"] : ""}
+            </p>
+          </div>
+          <div className="col-sm-12">
+            <p className="item-title col-lg-6 col-sm-6"> City</p>
+            <p className="item-content col-lg-6 col-sm-6">
+              {" "}
+              {this.props.data["city"]}
             </p>
           </div>
           <div className="col-lg-12">
@@ -152,7 +181,9 @@ class RatePanel extends React.Component {
     const propertyname = this.props.propertyname;
 
     if (!this.props.data) return <div> Empty list </div>;
+
     return this.props.data.map((record, index) => (
+
       <RateItem
         data={record}
         type={this.props.type}

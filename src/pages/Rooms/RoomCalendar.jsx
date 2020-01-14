@@ -221,7 +221,8 @@ class RoomCalendar extends React.Component {
         edit_seasonal_name: '',
         start_date: Utils._.formatYmdDate(this.state.startDate),
         end_date: Utils._.formatYmdDate(this.state.endDate),
-        seasonal_name: this.state.unavailable_name
+        seasonal_name: this.state.unavailable_name,
+
       };
     }
 
@@ -253,17 +254,17 @@ class RoomCalendar extends React.Component {
 
     if (this.state.edit_reservation) {
       let reservation_data = this.state.month_calendar_data.reservation_detail[this.state.edit_reservation_index];
+
       reservation_data.seasonal_name =
           reservation_data.seasonal_name === '' ||
           reservation_data.seasonal_name === undefined ||
           reservation_data.seasonal_name === null ?
               "no name" :
               reservation_data.seasonal_name;
-
       data = {
         start_date: Utils._.formatYmdDate(this.state.startDate),
         end_date: Utils._.formatYmdDate(this.state.endDate),
-        seasonal_name: this.state.reservation_f_name+''+this.state.reservation_l_name,
+        seasonal_name: this.state.reservation_f_name+' '+this.state.reservation_l_name,
         edit_seasonal_name: reservation_data.seasonal_name,
         notes: this.state.reservation_notes,
         reservation_source: 'Calendar',
@@ -271,7 +272,17 @@ class RoomCalendar extends React.Component {
         guests: this.state.reservation_guests ? this.state.reservation_guests : 0,
         reservation_id: this.state.edit_reservation_id,
         reserveid: reservation_data.reserveid,
+        first_name: this.state.reservation_f_name,
+        last_name: this.state.reservation_l_name,
+        street_address_1: this.state.street_address_one,
+        street_address_2: this.state.street_address_two,
+        city: this.state.city,
+        state: this.state.statename,
+        phone_number: this.state.phonenumber,
+        email: this.state.emailaddress,
+        postal_code: this.state.postalcode
       };
+
     } else {
       data = {
         start_date: Utils._.formatYmdDate(this.state.startDate),
@@ -283,7 +294,16 @@ class RoomCalendar extends React.Component {
         notes: this.state.reservation_notes,
         reservation_source: 'Calendar',
         price: this.state.reservation_price !== '' ? this.state.reservation_price : 0,
-        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0
+        guests: this.state.reservation_guests !== '' ? this.state.reservation_guests : 0,
+        first_name: this.state.reservation_f_name,
+        last_name: this.state.reservation_l_name,
+        street_address_1: this.state.street_address_one,
+        street_address_2: this.state.street_address_two,
+        city: this.state.city,
+        state: this.state.statename,
+        phone_number: this.state.phonenumber,
+        email: this.state.emailaddress,
+        postal_code: this.state.postalcode
       };
     }
 
@@ -529,8 +549,17 @@ class RoomCalendar extends React.Component {
 
   handleEditReservation(index, value) {
     let reservation_data = this.state.month_calendar_data.reservation_detail[index]
+    console.log(reservation_data)
     this.setState({
-      reservation_f_name: reservation_data.seasonal_name,
+      reservation_f_name: reservation_data.first_name ? reservation_data.first_name : reservation_data.seasonal_name,
+      reservation_l_name: reservation_data.last_name,
+      street_address_one: reservation_data.street_address_1,
+      street_address_two: reservation_data.street_address_2,
+      city: reservation_data.city,
+      statename: reservation_data.state,
+      postalcode: reservation_data.postal_code,
+      phonenumber: reservation_data.phone_number,
+      emailaddress: reservation_data.email,
       reservation_price: reservation_data.price,
       reservation_guests: reservation_data.guests,
       reservation_notes: reservation_data.notes,
@@ -904,7 +933,7 @@ class RoomCalendar extends React.Component {
                     <div className="col-md-6 col-sm-6 col-6 ses_pop1">
                       <label className="h6 my-auto">Street Address - 2
                       </label>
-                      <input type="text" id="reservation_l_name" name="reservation_l_name"
+                      <input type="text" id="street_address_two" name="street_address_two"
                              value={this.state.street_address_two} onChange={this.handleChangeModal}
                              className="tooltipstered"/>
                     </div>

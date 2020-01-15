@@ -67,7 +67,7 @@ class RoomAmenities extends React.PureComponent {
           <div className="common_listpage">
             <ManageRoomHeader 
               title="Tell Travelers About Your Space" 
-              descr="Every space on Vacation.Rentals----- is unique. Highlight what makes your listing welcoming so that it stands out to guests who want to stay in your area." 
+              descr="Every space on Vacation.Rentals is unique. Highlight what makes your listing welcoming so that it stands out to guests who want to stay in your area."
               prev="location" 
               next="photos" 
               room_id={room_id}/>

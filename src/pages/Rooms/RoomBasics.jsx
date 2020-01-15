@@ -614,7 +614,7 @@ class RoomBasics extends React.Component {
           <div className="common_listpage">
             <ManageRoomHeader 
               title="Help Travelers Find the Right Fit" 
-              descr="People searching on Vacation.Rentals----- can filter by listing basics to find a space that matches their needs." 
+              descr="People searching on Vacation.Rentals can filter by listing basics to find a space that matches their needs."
               next="description" 
               room_id={room_id}/>
 

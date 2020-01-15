@@ -206,7 +206,7 @@ class NewRoom extends React.Component {
             </div>
             <div className="active-message active-col">
               {/* {this.state.home_type[this.state.active_home_type].description} */}
-              Vacation.Rentals----- guests love the variety of home types
+              Vacation.Rentals guests love the variety of home types
               available.
             </div>
           </div>
@@ -444,7 +444,7 @@ class NewRoom extends React.Component {
                     List your Home
                   </h1>
                   <p className="text-lead" style={{ marginBottom: 3 }}>
-                    Vacation.Rentals----- lets you make money renting out your
+                    Vacation.Rentals lets you make money renting out your
                     place.
                   </p>
                 </div>

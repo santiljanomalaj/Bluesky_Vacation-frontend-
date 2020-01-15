@@ -367,7 +367,7 @@ class RoomDescription extends React.Component {
                       <h3>Write a description in another language</h3>
                       <h6>
                         {" "}
-                        Vacation.Rentals----- has facility to add your own
+                        Vacation.Rentals has facility to add your own
                         versions in other languages.{" "}
                       </h6>
                       <div className="row row-table">

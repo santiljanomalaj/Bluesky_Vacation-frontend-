@@ -9,7 +9,7 @@ class Content extends React.Component {
         <div className="content_showhead">
           <h1>Tell Travelers About Your Space</h1>
           <p>
-            Every space on Vacation.Rentals----- is unique. Highlight what makes
+            Every space on Vacation.Rentals is unique. Highlight what makes
             your listing welcoming so that it stands out to guests who want to
             stay in your area.
           </p>

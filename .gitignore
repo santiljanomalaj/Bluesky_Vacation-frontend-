@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 yarn.lock
 ca.homestead.homestead.crt
+/.idea
+/build

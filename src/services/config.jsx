@@ -1,7 +1,7 @@
 // export const API_HOST = "https://vacation.rentals"; 
-export const API_HOST = "https://blueskyapi.vacation.rentals/api";
+// export const API_HOST = "https://blueskyapi.vacation.rentals/api";
 // export const API_HOST = "https://rebuild.vacation.rentals/api";
-// export const API_HOST = "http://localhost:8000/api";
+export const API_HOST = "http://localhost:8000/api";
 export const GOOGLE_MAP_KEY = "AIzaSyA34nBk3rPJKXaNQaSX4YiLFoabX3DhkXs";
 export const STRIPE_KEY = "pk_live_U8hqowvDTqTO4x1I7Wm67SUX00hjzdOcUZ";
 

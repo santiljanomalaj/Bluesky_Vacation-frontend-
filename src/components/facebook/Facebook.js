@@ -45,10 +45,10 @@ export class Facebook extends Component{
                 onClick={this.componentClicked}
                 callback={this.responseFacebook}
                 render={renderProps => (
-                <a onClick={renderProps.onClick} className="btn icon-btn btn-block btn-large row-space-1 btn-facebook font-normal pad-top mr1">
-                <span><i className="icon icon-facebook" /></span>
+                // <a onClick={renderProps.onClick} className="btn icon-btn btn-block btn-large row-space-1 btn-facebook font-normal pad-top mr1">
+                // <span><i className="icon icon-facebook" /></span>
                 <span>Log in with Facebook</span>
-              </a>
+            //   </a>
                   )}
             />)
         return (

@@ -17,7 +17,7 @@
     "google-map-react": "^1.1.5",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "paypal-checkout": "^4.0.305",
     "pusher-js": "^5.0.3",
     "rc-calendar": "^9.15.7",
